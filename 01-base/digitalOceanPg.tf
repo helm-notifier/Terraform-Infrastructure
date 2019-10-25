@@ -6,3 +6,4 @@ resource "digitalocean_database_cluster" "postgres" {
   region     = "fra1"
   node_count = 1
 }
+

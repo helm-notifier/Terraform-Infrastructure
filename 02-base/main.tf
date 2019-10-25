@@ -4,7 +4,7 @@ terraform {
     organization = "phumberdroz"
 
     workspaces {
-      prefix = "helm-notifier-"
+      prefix = "helm-notifier-02-"
     }
   }
 }

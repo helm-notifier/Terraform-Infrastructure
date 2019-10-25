@@ -1,5 +1,5 @@
 resource "digitalocean_kubernetes_cluster" "helm-notifier" {
-  name    = "helm-notifier"
+  name    = "helm-notifier-k8s"
   region  = "fra1"
   version = "1.15.5-do.0"
 
@@ -9,3 +9,4 @@ resource "digitalocean_kubernetes_cluster" "helm-notifier" {
     node_count = 3
   }
 }
+
