@@ -9,3 +9,4 @@ resource "digitalocean_kubernetes_cluster" "helm-notifier" {
     node_count = 3
   }
 }
+
