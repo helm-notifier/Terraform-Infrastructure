@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "certManager" {
+resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = "monitoring"
   }
