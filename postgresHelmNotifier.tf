@@ -1,22 +1,22 @@
 
-# resource "random_string" "helm-repositories" {
+# resource "random_string" "helm-notifier" {
 #   length  = 32
 #   special = false
 # }
 
-# resource "postgresql_role" "helm-repositories" {
-#   name     = "helm-repositories"
+# resource "postgresql_role" "helm-notifier" {
+#   name     = "helm-notifier"
 #   login    = true
 #   password = "${random_string.helm-repositories.result}"
 # }
-# resource "postgresql_database" "helm-repositories" {
-#   name              = "helm-repositories"
+# resource "postgresql_database" "helm-notifier" {
+#   name              = "helm-notifier"
 #   owner             = "${postgresql_role.helm-repositories.name}"
 #   allow_connections = true
 # }
 
 
-# resource "kubernetes_secret" "helm-repositories" {
+# resource "kubernetes_secret" "helm-notifier" {
 #   type = "Opaque"
 
 #   metadata {
