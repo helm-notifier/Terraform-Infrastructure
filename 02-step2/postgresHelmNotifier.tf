@@ -25,6 +25,6 @@ resource "kubernetes_secret" "helm-notifier" {
   }
 
   data = {
-    database-uri = "postgresql://${postgresql_role.helm-notifier.name}:${random_string.helm-notifier.result}@${digitalocean_database_cluster.postgres.host}:${digitalocean_database_cluster.postgres.port}/${postgresql_database.helm-notifier.name}"
+    database-uri = "postgresql://${postgresql_role.helm-notifier.name}:${random_string.helm-notifier.result}@${data.digitalocean_database_cluster.db.host}:${data.digitalocean_database_cluster.db.port}/${postgresql_database.helm-notifier.name}"
   }
 }
