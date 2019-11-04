@@ -30,7 +30,7 @@ resource "kubernetes_secret" "helm-notifier" {
 }
 
 
-resource "kubernetes_secret" "helm-notifier" {
+resource "kubernetes_secret" "helmNotifierDb" {
   type = "Opaque"
 
   metadata {
