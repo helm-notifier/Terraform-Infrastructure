@@ -28,3 +28,17 @@ resource "kubernetes_secret" "helm-notifier" {
     database-uri = "postgresql://${postgresql_role.helm-notifier.name}:${random_string.helm-notifier.result}@${data.digitalocean_database_cluster.db.host}:${data.digitalocean_database_cluster.db.port}/${postgresql_database.helm-notifier.name}?sslmode=require"
   }
 }
+
+
+resource "kubernetes_secret" "helm-notifier" {
+  type = "Opaque"
+
+  metadata {
+    name      = "database-uri"
+    namespace = "${kubernetes_namespace.helmNotifier.metadata.0.name}"
+  }
+
+  data = {
+    database-uri = "postgresql://${postgresql_role.helm-notifier.name}:${random_string.helm-notifier.result}@${data.digitalocean_database_cluster.db.host}:${data.digitalocean_database_cluster.db.port}/${postgresql_database.helm-notifier.name}?sslmode=require"
+  }
+}
