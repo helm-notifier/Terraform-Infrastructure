@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "01" {
+resource "kubernetes_namespace" "zero-one" {
   metadata {
     name = "01"
   }
