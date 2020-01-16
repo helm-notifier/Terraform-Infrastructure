@@ -12,3 +12,6 @@ data "digitalocean_database_cluster" "db" {
 data "digitalocean_kubernetes_cluster" "k8s" {
   name = "helm-notifier-k8s"
 }
+data "digitalocean_database_cluster" "mysql" {
+  name = "zero-one-mysql"
+}
