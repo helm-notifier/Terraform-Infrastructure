@@ -14,6 +14,6 @@ resource "mysql_user" "zero-one-forum" {
   user = "zero-one-fourm"
   host = "%"
 }
-resource "mysql_database" "helm-notifier" {
+resource "mysql_database" "zero-one-forum" {
   name              = "zero-one-forum"
 }
