@@ -49,11 +49,12 @@ resource "mysql_grant" "zero-one-keycloak" {
 }
 
 resource "kubernetes_secret" "keycloak" {
+  type = "Opaque"
   metadata {
     name = "keycloak"
     namespace = kubernetes_namespace.zero-one.metadata.0.name
   }
-   data {
+   data = {
      database = mysql_database.zero-one-keycloak.name
      username = mysql_user.zero-one-keycloak.user
      password = random_password.zero-one-keycloak.result
