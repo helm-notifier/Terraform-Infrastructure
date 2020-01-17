@@ -11,7 +11,7 @@ resource "random_password" "mysql-zero-one-forum" {
 
 resource "mysql_user" "zero-one-forum" {
   plaintext_password = random_password.mysql-zero-one-forum.result
-  user = "zero-one-fourm"
+  user = "zero-one-forum"
   host = "%"
 }
 resource "mysql_database" "zero-one-forum" {
