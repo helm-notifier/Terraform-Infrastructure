@@ -11,17 +11,39 @@ resource "random_password" "mysql-zero-one-forum" {
 
 resource "mysql_user" "zero-one-forum" {
   user = "zero-one-forum"
-  auth_plugin = "mysql_native_password"
+  plaintext_password = random_password.mysql-zero-one-forum.result
   host = "%"
 }
+
 resource "mysql_database" "zero-one-forum" {
   name              = "zero-one-forum"
 }
-
 
 resource "mysql_grant" "zero-one-forum" {
   user       = mysql_user.zero-one-forum.user
   host       = mysql_user.zero-one-forum.host
   database   = mysql_database.zero-one-forum.name
+  privileges = ["ALL"]
+}
+
+resource "random_password" "zero-one-keycloak" {
+  length  = 32
+  special = false
+}
+
+resource "mysql_user" "zero-one-keycloak" {
+  user = "zero-one-keycloak"
+  plaintext_password = random_password.zero-one-keycloak.result
+  host = "%"
+}
+
+resource "mysql_database" "zero-one-keycloak" {
+  name              = "zero-one-keycloak"
+}
+
+resource "mysql_grant" "zero-one-keycloak" {
+  user       = mysql_user.zero-one-keycloak.user
+  host       = mysql_user.zero-one-keycloak.host
+  database   = mysql_database.zero-one-keycloak.name
   privileges = ["ALL"]
 }
