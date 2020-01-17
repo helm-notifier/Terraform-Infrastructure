@@ -47,3 +47,17 @@ resource "mysql_grant" "zero-one-keycloak" {
   database   = mysql_database.zero-one-keycloak.name
   privileges = ["ALL"]
 }
+
+resource "kubernetes_secret" "keycloak" {
+  metadata {
+    name = "keycloak"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+   data {
+     database = mysql_database.zero-one-keycloak.name
+     username = mysql_user.zero-one-keycloak.user
+     password = random_password.zero-one-keycloak.result
+     host = data.digitalocean_database_cluster.mysql.host
+     port = data.digitalocean_database_cluster.mysql.port
+   }
+}
