@@ -62,3 +62,40 @@ resource "kubernetes_secret" "keycloak" {
      port = data.digitalocean_database_cluster.mysql.port
    }
 }
+
+resource "random_password" "zero-one-banking" {
+  length  = 32
+  special = false
+}
+
+resource "mysql_user" "zero-one-banking" {
+  user = "zero-one-banking"
+  plaintext_password = random_password.zero-one-banking.result
+  host = "%"
+}
+
+resource "mysql_database" "zero-one-banking" {
+  name              = "zero-one-banking"
+}
+
+resource "mysql_grant" "zero-one-banking" {
+  user       = mysql_user.zero-one-banking.user
+  host       = mysql_user.zero-one-banking.host
+  database   = mysql_database.zero-one-banking.name
+  privileges = ["ALL"]
+}
+
+resource "kubernetes_secret" "banking" {
+  type = "Opaque"
+  metadata {
+    name = "banking"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+  data = {
+    database = mysql_database.zero-one-banking.name
+    username = mysql_user.zero-one-banking.user
+    password = random_password.zero-one-banking.result
+    host = data.digitalocean_database_cluster.mysql.host
+    port = data.digitalocean_database_cluster.mysql.port
+  }
+}
