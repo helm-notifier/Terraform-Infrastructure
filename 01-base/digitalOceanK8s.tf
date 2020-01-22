@@ -1,12 +1,12 @@
 resource "digitalocean_kubernetes_cluster" "helm-notifier" {
   name    = "helm-notifier-k8s"
   region  = "fra1"
-  version = "1.15.5-do.0"
+  version = "1.16.2-do.2"
 
   node_pool {
     name       = "worker-pool"
-    size       = "s-1vcpu-2gb"
-    node_count = 3
+    size       = "s-2vcpu-4gb"
+    node_count = 5
   }
 }
 
