@@ -99,3 +99,40 @@ resource "kubernetes_secret" "banking" {
     port = data.digitalocean_database_cluster.mysql.port
   }
 }
+
+resource "random_password" "zero-one-messaging" {
+  length  = 32
+  special = false
+}
+
+resource "mysql_user" "zero-one-messaging" {
+  user = "zero-one-messaging"
+  plaintext_password = random_password.zero-one-messaging.result
+  host = "%"
+}
+
+resource "mysql_database" "zero-one-messaging" {
+  name              = "zero-one-messaging"
+}
+
+resource "mysql_grant" "zero-one-messaging" {
+  user       = mysql_user.zero-one-messaging.user
+  host       = mysql_user.zero-one-messaging.host
+  database   = mysql_database.zero-one-messaging.name
+  privileges = ["ALL"]
+}
+
+resource "kubernetes_secret" "messaging" {
+  type = "Opaque"
+  metadata {
+    name = "messaging"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+  data = {
+    database = mysql_database.zero-one-messaging.name
+    username = mysql_user.zero-one-messaging.user
+    password = random_password.zero-one-messaging.result
+    host = data.digitalocean_database_cluster.mysql.host
+    port = data.digitalocean_database_cluster.mysql.port
+  }
+}
