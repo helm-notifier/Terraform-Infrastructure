@@ -136,3 +136,19 @@ resource "kubernetes_secret" "messaging" {
     port = data.digitalocean_database_cluster.mysql.port
   }
 }
+
+resource "random_password" "rabbitmq" {
+  length  = 32
+  special = false
+}
+
+resource "kubernetes_secret" "rabbitmq" {
+  type = "Opaque"
+  metadata {
+    name = "rabbitmq-pass"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+  data = {
+    rabbitmq-password = random_password.rabbitmq.result
+  }
+}
