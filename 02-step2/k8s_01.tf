@@ -152,3 +152,36 @@ resource "kubernetes_secret" "rabbitmq" {
     rabbitmq-password = random_password.rabbitmq.result
   }
 }
+
+resource "random_password" "zero-one-item" {
+  length  = 32
+  special = false
+}
+
+resource "mysql_user" "zero-one-item" {
+  user = "zero-one-item"
+  plaintext_password = random_password.zero-one-item.result
+  host = "%"
+}
+
+resource "mysql_database" "zero-one-item" {
+  name              = "zero-one-item"
+}
+
+resource "mysql_grant" "zero-one-item" {
+  user       = mysql_user.zero-one-item.user
+  host       = mysql_user.zero-one-item.host
+  database   = mysql_database.zero-one-item.name
+  privileges = ["ALL"]
+}
+
+resource "kubernetes_secret" "item" {
+  type = "Opaque"
+  metadata {
+    name = "item"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+  data = {
+    server = "server=${data.digitalocean_database_cluster.mysql.host}:${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-item.name};user=${mysql_user.zero-one-item.user};pwd=${random_password.zero-one-item.result}"
+  }
+}
