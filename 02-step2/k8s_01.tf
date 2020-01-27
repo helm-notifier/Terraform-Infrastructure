@@ -182,6 +182,6 @@ resource "kubernetes_secret" "item" {
     namespace = kubernetes_namespace.zero-one.metadata.0.name
   }
   data = {
-    server = "server=${data.digitalocean_database_cluster.mysql.host}:${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-item.name};user=${mysql_user.zero-one-item.user};pwd=${random_password.zero-one-item.result}"
+    server = "server=${data.digitalocean_database_cluster.mysql.host};port=${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-item.name};user=${mysql_user.zero-one-item.user};pwd=${random_password.zero-one-item.result}"
   }
 }
