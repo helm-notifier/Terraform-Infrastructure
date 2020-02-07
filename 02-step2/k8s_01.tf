@@ -218,3 +218,36 @@ resource "kubernetes_secret" "shops" {
     server = "server=${data.digitalocean_database_cluster.mysql.host};port=${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-shops.name};user=${mysql_user.zero-one-shops.user};pwd=${random_password.zero-one-shops.result}"
   }
 }
+
+resource "random_password" "zero-one-inventory" {
+  length  = 32
+  special = false
+}
+
+resource "mysql_user" "zero-one-inventory" {
+  user = "zero-one-inventory"
+  plaintext_password = random_password.zero-one-inventory.result
+  host = "%"
+}
+
+resource "mysql_database" "zero-one-inventory" {
+  name              = "zero-one-inventory"
+}
+
+resource "mysql_grant" "zero-one-inventory" {
+  user       = mysql_user.zero-one-inventory.user
+  host       = mysql_user.zero-one-inventory.host
+  database   = mysql_database.zero-one-inventory.name
+  privileges = ["ALL"]
+}
+
+resource "kubernetes_secret" "inventory" {
+  type = "Opaque"
+  metadata {
+    name = "inventory"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+  data = {
+    server = "server=${data.digitalocean_database_cluster.mysql.host};port=${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-inventory.name};user=${mysql_user.zero-one-inventory.user};pwd=${random_password.zero-one-inventory.result}"
+  }
+}
