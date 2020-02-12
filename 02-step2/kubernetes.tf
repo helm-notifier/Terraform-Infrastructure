@@ -4,4 +4,5 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(
     data.digitalocean_kubernetes_cluster.k8s.kube_config[0].cluster_ca_certificate
   )
+  load_config_file = "false"
 }
