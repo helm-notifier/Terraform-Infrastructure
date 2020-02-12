@@ -251,3 +251,36 @@ resource "kubernetes_secret" "inventory" {
     server = "server=${data.digitalocean_database_cluster.mysql.host};port=${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-inventory.name};user=${mysql_user.zero-one-inventory.user};pwd=${random_password.zero-one-inventory.result}"
   }
 }
+
+resource "random_password" "zero-one-character" {
+  length  = 32
+  special = false
+}
+
+resource "mysql_user" "zero-one-character" {
+  user = "zero-one-character"
+  plaintext_password = random_password.zero-one-character.result
+  host = "%"
+}
+
+resource "mysql_database" "zero-one-character" {
+  name              = "zero-one-character"
+}
+
+resource "mysql_grant" "zero-one-character" {
+  user       = mysql_user.zero-one-character.user
+  host       = mysql_user.zero-one-character.host
+  database   = mysql_database.zero-one-character.name
+  privileges = ["ALL"]
+}
+
+resource "kubernetes_secret" "character" {
+  type = "Opaque"
+  metadata {
+    name = "character"
+    namespace = kubernetes_namespace.zero-one.metadata.0.name
+  }
+  data = {
+    server = "server=${data.digitalocean_database_cluster.mysql.host};port=${data.digitalocean_database_cluster.mysql.port};database=${mysql_database.zero-one-character.name};user=${mysql_user.zero-one-character.user};pwd=${random_password.zero-one-character.result}"
+  }
+}
