@@ -32,11 +32,11 @@ resource "kubernetes_secret" "openfaas" {
 
   metadata {
     name      = "basic-auth"
-    namespace = "${kubernetes_namespace.openfaas.metadata.0.name}"
+    namespace = kubernetes_namespace.openfaas.metadata.0.name
   }
 
   data = {
     basic-auth-user     = "admin"
-    basic-auth-password = "${random_string.openfaas-pass.result}"
+    basic-auth-password = random_string.openfaas-pass.result
   }
 }
