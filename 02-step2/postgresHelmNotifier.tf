@@ -7,11 +7,11 @@ resource "random_string" "helm-notifier" {
 resource "postgresql_role" "helm-notifier" {
   name     = "helm-notifier"
   login    = true
-  password = "${random_string.helm-notifier.result}"
+  password = random_string.helm-notifier.result
 }
 resource "postgresql_database" "helm-notifier" {
   name              = "helm-notifier"
-  owner             = "${postgresql_role.helm-notifier.name}"
+  owner             = postgresql_role.helm-notifier.name
   allow_connections = true
 }
 
@@ -21,7 +21,7 @@ resource "kubernetes_secret" "helm-notifier" {
 
   metadata {
     name      = "database-uri"
-    namespace = "${kubernetes_namespace.openfaas-fn.metadata.0.name}"
+    namespace = kubernetes_namespace.openfaas-fn.metadata.0.name
   }
 
   data = {
@@ -35,7 +35,7 @@ resource "kubernetes_secret" "helmNotifierDb" {
 
   metadata {
     name      = "database-uri"
-    namespace = "${kubernetes_namespace.helmNotifier.metadata.0.name}"
+    namespace = kubernetes_namespace.helmNotifier.metadata.0.name
   }
 
   data = {
